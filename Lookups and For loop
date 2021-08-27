@@ -1,0 +1,52 @@
+Dear %%Firstname%%
+
+<br>
+
+<br>
+Please find your invoice attached:
+  %%[
+
+Var @First, @Pname, @UID, @count, @rows, @i
+SET @First = Firstname
+SET @UID = UserID
+SET @rows= LookupRows('Purchase_DE','UserID', @UID)
+SET @count = rowcount(@rows)
+if @count>0 THEN
+for @i = 1 to @count do
+Var @PID, @Totamt, @Price, @Qty, @row
+SET @row = row(@rows, @i)
+SET @PID= field(@row,'ProductID')
+SET @Qty = field (@row, 'Qty')
+for @c = 1 to @count do
+SET @Pname = Lookup('Products_DE','ProductName','ProductID',@PID)
+SET @Price = Lookup('Products_DE','Price','ProductID',@PID)
+SET @Totamt = Multiply(@Qty,@Price)
+next @i
+
+
+]%%
+
+
+  <br>
+<br>
+  Product Name:  %%=v(@Pname) =%%
+<br>
+  Product Price: %%=v(@Price) =%%
+<br>
+  %%[ next ]%%
+<br>
+%%[ ENDIF ]%%
+
+<br>
+
+  Quantity purchased: %%=v(@Qty) =%%
+<br>
+
+   Total amount: %%=v(@Totamt) =%%
+   <br>
+   
+
+ 
+
+<table cellpadding="2" cellspacing="0" width="600" ID="Table5" Border=0><tr><td><font face="verdana" size="1" color="#444444">This email was sent by: <b>%%Member_Busname%%</b><br>%%Member_Addr%% %%Member_City%%, %%Member_State%%, %%Member_PostalCode%%, %%Member_Country%%<br><br></font></td></tr></table><a href="%%profile_center_url%%" alias="Update Profile">Update Profile</a><custom name="opencounter" type="tracking"/>
+  
